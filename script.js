@@ -1,7 +1,20 @@
-const SHEET_ID = "1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo"; // Your Google Sheet ID
+const SHEET_ID = "1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo";
 const BASE_URL = `https://opensheet.elk.sh/${SHEET_ID}`;
 
-// Load Standings
+// Football quotes array
+const FOOTBALL_QUOTES = [
+    { quote: "The harder the battle, the sweeter the victory.", author: "Unknown" },
+    { quote: "Success is no accident. It is hard work, perseverance, learning, sacrifice and most of all, love of what you are doing.", author: "Pelé" },
+    { quote: "You can't get anywhere without sacrifice. I sacrificed many things - but when you achieve your goals, it's all worth it.", author: "Cristiano Ronaldo" },
+    { quote: "Talent without working hard is nothing.", author: "Lionel Messi" },
+    { quote: "The more difficult the victory, the greater the happiness in winning.", author: "Pelé" },
+    { quote: "If you don't believe you're the best, then you will never achieve all that you're capable of.", author: "Cristiano Ronaldo" },
+    { quote: "I always work hard, no matter who I'm facing. I never underestimate any opponent.", author: "Neymar Jr." },
+    { quote: "The difference between the impossible and the possible lies in a person's determination.", author: "Tommy Lasorda" },
+    { quote: "Persistence can change failure into extraordinary achievement.", author: "Maradona" },
+    { quote: "You have to fight to reach your dream. You have to sacrifice and work hard for it.", author: "Lionel Messi" }
+];
+
 function loadStandings() {
     const groups = ["Group A", "Group B", "Group C"];
     let html = "";
@@ -10,27 +23,24 @@ function loadStandings() {
         fetch(`${BASE_URL}/${group}`)
             .then(response => response.json())
             .then(data => {
-                let tableRows = "";
-                data.forEach(team => {
-                    tableRows += `
-                        <tr>
-                            <td>${team['Team Name']}</td>
-                            <td>${team.P}</td>
-                            <td>${team.W}</td>
-                            <td>${team.D}</td>
-                            <td>${team.L}</td>
-                            <td>${team.GF}</td>
-                            <td>${team.GA}</td>
-                            <td>${team.GD}</td>
-                            <td>${team.PTS}</td>
-                        </tr>
-                    `;
-                });
+                const tableRows = data.map(team => `
+                    <tr>
+                        <td>${team['Team Name']}</td>
+                        <td>${team.P}</td>
+                        <td>${team.W}</td>
+                        <td>${team.D}</td>
+                        <td>${team.L}</td>
+                        <td>${team.GF}</td>
+                        <td>${team.GA}</td>
+                        <td>${team.GD}</td>
+                        <td class="pts-cell">${team.PTS}</td>
+                    </tr>
+                `).join('');
 
                 html += `
                     <div class="group-card">
-                        <h3>${group}</h3>
-                        <table class="table table-striped">
+                        <h3 style="padding: 1rem; margin: 0; font-size: 1.4rem;">${group}</h3>
+                        <table>
                             <thead>
                                 <tr>
                                     <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
@@ -43,47 +53,59 @@ function loadStandings() {
                 `;
 
                 document.getElementById("standings-content").innerHTML = html;
-            });
+            })
+            .catch(error => console.error('Error loading standings:', error));
     });
 }
 
-// Load Fixtures
 function loadFixtures() {
     fetch(`${BASE_URL}/Fixtures`)
         .then(response => response.json())
         .then(data => {
-            let html = "";
-            data.forEach(match => {
-                html += `
-                    <div class="fixture-card">
-                        <div class="match">
-                            <span class="team">${match['Team 1']}</span> 
-                            <span class="vs">vs</span> 
-                            <span class="team">${match['Team 2']}</span>
-                        </div>
-                        <div class="details">
-                            <span class="time">${match['Time']}</span> |
-                            <span class="venue">${match['Venue']}</span>
+            const html = data.map(match => `
+                <div class="fixture-card">
+                    <div style="text-align: right; font-size: 1.1rem;">${match['Team 1']}</div>
+                    <div style="text-align: center">
+                        <div class="vs-badge">VS</div>
+                        <div style="margin-top: 8px; color: ${var(--accent)};">
+                            ${match['Time']} ⚽ ${match['Venue']}
                         </div>
                     </div>
-                `;
-            });
+                    <div style="text-align: left; font-size: 1.1rem;">${match['Team 2']}</div>
+                </div>
+            `).join('');
 
             document.getElementById("fixtures-content").innerHTML = html;
-        });
+        })
+        .catch(error => console.error('Error loading fixtures:', error));
 }
 
-// Tab switching function
+function showRandomQuote() {
+    const randomQuote = FOOTBALL_QUOTES[Math.floor(Math.random() * FOOTBALL_QUOTES.length)];
+    document.getElementById('quote-container').innerHTML = `
+        <p class="pulse">"${randomQuote.quote}"</p>
+        <p style="margin-top: 0.5rem; color: ${var(--accent)};">– ${randomQuote.author}</p>
+    `;
+}
+
 function showTab(tab) {
-    document.getElementById("standings").style.display = tab === 'standings' ? "block" : "none";
-    document.getElementById("fixtures").style.display = tab === 'fixtures' ? "block" : "none";
+    document.querySelectorAll('.content').forEach(el => el.style.display = 'none');
+    document.getElementById(tab).style.display = 'block';
+    
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.toggle('active', item.textContent.toLowerCase() === tab);
+    });
 }
 
-// Load Data on Startup
 document.addEventListener("DOMContentLoaded", () => {
     loadStandings();
     loadFixtures();
-    showTab('standings'); // Default to standings
-    setInterval(loadStandings, 30000);
-    setInterval(loadFixtures, 30000);
+    showRandomQuote();
+    showTab('standings');
+    
+    setInterval(() => {
+        loadStandings();
+        loadFixtures();
+        showRandomQuote();
+    }, 30000);
 });
