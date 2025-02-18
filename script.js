@@ -70,14 +70,21 @@ function loadFixtures() {
 
             const html = data.map(match => `
                 <div class="fixture-card">
-                    <div style="text-align: right; font-size: 1.1rem;">${match['Team 1']}</div>
+                    <!-- Right column -->
+                    <div style="text-align: right; font-size: 1.1rem;">
+                        ${match['Team 1']}
+                    </div>
+                    <!-- Center column -->
                     <div style="text-align: center;">
                         <div class="vs-badge">VS</div>
                         <div style="color: ${accentColor};">
                             ${match['Time']} ⚽ ${match['Venue']}
                         </div>
                     </div>
-                    <div style="text-align: left; font-size: 1.1rem;">${match['Team 2']}</div>
+                    <!-- Left column -->
+                    <div style="text-align: left; font-size: 1.1rem;">
+                        ${match['Team 2']}
+                    </div>
                 </div>
             `).join('');
 
