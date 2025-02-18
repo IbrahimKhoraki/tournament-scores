@@ -19,12 +19,12 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-    const SHEET_ID = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRMrpP_34pQ0KpelDF1J3ouZRQkuB2h1Os8utOUd8UQiMVRiPBu6opTrFsX6NoMaeDf7Jk89C_kuw5I/pubhtml';
+    const SHEET_ID = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRMrpP_34pQ0KpelDF1J3ouZRQkuB2h1Os8utOUd8UQiMVRiPBu6opTrFsX6NoMaeDf7Jk89C_kuw5I/pubhtmlRE';
     
     function loadData() {
         const groups = ['A', 'B', 'C'];
         groups.forEach(group => {
-            $.getJSON(`https://opensheet.elk.sh/${https://docs.google.com/spreadsheets/d/e/2PACX-1vRMrpP_34pQ0KpelDF1J3ouZRQkuB2h1Os8utOUd8UQiMVRiPBu6opTrFsX6NoMaeDf7Jk89C_kuw5I/pubhtml}/Group%20${group}`, data => {
+            $.getJSON(`https://opensheet.elk.sh/${SHEET_ID}/Group%20${group}`, data => {
                 let html = `
                     <div class="col-md-12 group-card">
                         <h3>Group ${group}</h3>
