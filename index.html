@@ -3,33 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ICAE 2025 Football Scoreboard</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>ICAE 2025 FOOTBALL SCOREBOARD</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    
+    <style>
+        /* General Styles */
+        body {
+            background: linear-gradient(to right, #1a1a1a, #333);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            margin-bottom: 15px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            background: #f0f0f0;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .tab.active {
+            background: #004080;
+            color: white;
+        }
+
+        /* ✅ Fix 1: Ordering of Groups */
+        .group-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .group-container .group-card[data-group="A"] { order: 1; }
+        .group-container .group-card[data-group="B"] { order: 2; }
+        .group-container .group-card[data-group="C"] { order: 3; }
+
+        /* Tables */
+        table {
+            width: 90%;
+            margin: auto;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+        }
+
+        th {
+            background: rgba(0, 0, 0, 0.4);
+            font-weight: 600;
+        }
+
+        /* ✅ Fix 2: Fixtures Layout */
+        .fixture {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .fixture-number {
+            font-weight: bold;
+            color: #ffcc00;
+            margin-right: 10px;
+        }
+
+        /* ✅ Fix 3: Mobile Version (Gradient Box Contains Table) */
+        @media (max-width: 768px) {
+            .group-card, .fixture {
+                width: 90%;
+                margin: 0 auto;
+            }
+        }
+
+        /* ✅ Fix 4: Footer */
+        .footer {
+            text-align: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            font-size: 14px;
+            margin-top: 20px;
+        }
+
+        /* Random Quote (Generated) */
+        #quote {
+            font-style: italic;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
 
     <div class="container">
         <h1>ICAE 2025 FOOTBALL SCOREBOARD</h1>
+        
+        <!-- Tabs -->
         <div class="tabs">
-            <button onclick="showTab('standings')" class="tab active">Standings</button>
-            <button onclick="showTab('fixtures')" class="tab">Fixtures</button>
+            <button class="tab active" onclick="showTab('groups')">Group Standings</button>
+            <button class="tab" onclick="showTab('fixtures')">Fixtures</button>
         </div>
 
-        <div id="standings" class="content">
-            <div id="standings-content"></div>
+        <!-- Groups -->
+        <div id="groups" class="content">
+            <div class="group-container" id="group-standings"></div>
         </div>
 
+        <!-- Fixtures -->
         <div id="fixtures" class="content" style="display: none;">
-            <div id="fixtures-content"></div>
-        </div>
-
-        <div class="footer">
-            <p id="quote"></p>
-            <p>© 2025 ICAE Tournament. All rights reserved.</p>
+            <div id="fixtures-list"></div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- Footer -->
+    <footer class="footer">
+        <p id="quote"></p>
+        <script>
+            // ✅ Generates a random quote each time the page loads
+            const quotes = [
+                "Football is a game of mistakes. The team that makes the fewest wins.",
+                "Hard work beats talent when talent doesn’t work hard.",
+                "The more difficult the victory, the greater the happiness in winning.",
+                "Some people think football is a matter of life and death. I assure you, it’s much more serious than that.",
+                "It’s not about the will to win, it’s about the will to prepare to win."
+            ];
+            document.getElementById("quote").innerText = quotes[Math.floor(Math.random() * quotes.length)];
+        </script>
+    </footer>
 
+    <script src="script.js"></script>
 </body>
 </html>
