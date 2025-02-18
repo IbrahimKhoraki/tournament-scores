@@ -1,97 +1,56 @@
-const SHEET_ID = "1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo"; // Your Google Sheet ID
-const BASE_URL = `https://opensheet.elk.sh/${SHEET_ID}`;
+document.addEventListener("DOMContentLoaded", function() {
+    fetchStandings();
+    fetchFixtures();
+});
 
-// Load Standings
-function loadStandings() {
-    const groups = ["Group A", "Group B", "Group C"]; // Now sorted correctly
-    let html = "";
+// ✅ Fetch Standings from Google Sheets
+function fetchStandings() {
+    fetch("https://opensheet.elk.sh/1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo/Group%20A")
+        .then(response => response.json())
+        .then(data => renderStandings(data, "A"));
 
-    groups.forEach(group => {
-        fetch(`${BASE_URL}/${group}`)
-            .then(response => response.json())
-            .then(data => {
-                let tableRows = "";
-                data.forEach(team => {
-                    tableRows += `
-                        <tr>
-                            <td>${team['Team Name']}</td>
-                            <td>${team.P}</td>
-                            <td>${team.W}</td>
-                            <td>${team.D}</td>
-                            <td>${team.L}</td>
-                            <td>${team.GF}</td>
-                            <td>${team.GA}</td>
-                            <td>${team.GD}</td>
-                            <td>${team.PTS}</td>
-                        </tr>
-                    `;
-                });
+    fetch("https://opensheet.elk.sh/1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo/Group%20B")
+        .then(response => response.json())
+        .then(data => renderStandings(data, "B"));
 
-                html += `
-                    <div class="group-card">
-                        <h3>${group}</h3>
-                        <table class="standings-table">
-                            <thead>
-                                <tr>
-                                    <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
-                                    <th>GF</th><th>GA</th><th>GD</th><th>PTS</th>
-                                </tr>
-                            </thead>
-                            <tbody>${tableRows}</tbody>
-                        </table>
-                    </div>
-                `;
-
-                document.getElementById("standings-content").innerHTML = html;
-            });
-    });
+    fetch("https://opensheet.elk.sh/1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo/Group%20C")
+        .then(response => response.json())
+        .then(data => renderStandings(data, "C"));
 }
 
-// Load Fixtures
-function loadFixtures() {
-    fetch(`${BASE_URL}/Fixtures`)
+// ✅ Render Standings
+function renderStandings(data, group) {
+    const container = document.getElementById("group-standings");
+    const card = document.createElement("div");
+    card.classList.add("group-card");
+    card.setAttribute("data-group", group);
+    
+    let tableHTML = `<h2>Group ${group}</h2><table><tr><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>Pts</th></tr>`;
+    
+    data.forEach(team => {
+        tableHTML += `<tr><td>${team.Team}</td><td>${team.P}</td><td>${team.W}</td><td>${team.D}</td><td>${team.L}</td><td>${team.GF}</td><td>${team.GA}</td><td>${team.Pts}</td></tr>`;
+    });
+
+    tableHTML += `</table>`;
+    card.innerHTML = tableHTML;
+    container.appendChild(card);
+}
+
+// ✅ Fetch Fixtures from Google Sheets
+function fetchFixtures() {
+    fetch("https://opensheet.elk.sh/1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo/Fixtures")
         .then(response => response.json())
         .then(data => {
-            let html = "";
+            const container = document.getElementById("fixtures-list");
             data.forEach((match, index) => {
-                html += `
-                    <div class="fixture-card">
-                        <div class="match">
-                            <span class="match-number">(${index + 1})</span>
-                            <span class="team">${match['Team 1']}</span> 
-                            <span class="vs">vs</span> 
-                            <span class="team">${match['Team 2']}</span>
-                        </div>
-                        <div class="details">
-                            <span class="time">${match['Time']}</span> |
-                            <span class="venue">${match['Venue']}</span>
-                        </div>
-                    </div>
-                `;
+                const fixtureHTML = `<div class="fixture"><span class="fixture-number">(${index + 1})</span> ${match.Team1} vs ${match.Team2} - ${match.Time} @ ${match.Venue}</div>`;
+                container.innerHTML += fixtureHTML;
             });
-
-            document.getElementById("fixtures-content").innerHTML = html;
         });
 }
 
-// Random Quotes for Footer
-function generateQuote() {
-    const quotes = [
-        "Champions keep playing until they get it right.",
-        "It's not whether you get knocked down, it's whether you get up.",
-        "Hard work beats talent when talent doesn't work hard.",
-        "Success is no accident. It is hard work, perseverance, and love for the game.",
-        "Winning isn’t everything, but wanting to win is.",
-        "Football is a game of mistakes. Whoever makes the fewest wins."
-    ];
-    document.getElementById("quote").innerText = quotes[Math.floor(Math.random() * quotes.length)];
+// ✅ Tab Switching
+function showTab(tab) {
+    document.getElementById("groups").style.display = tab === "groups" ? "block" : "none";
+    document.getElementById("fixtures").style.display = tab === "fixtures" ? "block" : "none";
 }
-
-// Load Data on Startup
-document.addEventListener("DOMContentLoaded", () => {
-    loadStandings();
-    loadFixtures();
-    generateQuote();
-    setInterval(loadStandings, 30000);
-    setInterval(loadFixtures, 30000);
-});
