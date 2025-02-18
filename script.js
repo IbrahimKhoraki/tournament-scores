@@ -1,73 +1,106 @@
-const sheetId = "1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo";
-const groups = ["Group A", "Group B", "Group C"];
-const fixturesSheet = "Fixtures";
+const SHEET_ID = "1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo"; // Your Google Sheet ID
+const BASE_URL = `https://opensheet.elk.sh/${SHEET_ID}`;
 
-// Fetch and display groups in correct order
-async function fetchPoints() {
-    const container = document.getElementById("groups");
-    container.innerHTML = "";
+// Load Standings
+function loadStandings() {
+    const groups = ["Group A", "Group B", "Group C"]; // Fixed order
+    let html = "";
 
-    for (let group of groups) {
-        const url = `https://opensheet.elk.sh/${sheetId}/${group}`;
-        const response = await fetch(url);
-        const data = await response.json();
+    groups.forEach(group => {
+        fetch(`${BASE_URL}/${group}`)
+            .then(response => response.json())
+            .then(data => {
+                let tableRows = "";
+                data.forEach(team => {
+                    tableRows += `
+                        <tr>
+                            <td>${team['Team Name']}</td>
+                            <td>${team.P}</td>
+                            <td>${team.W}</td>
+                            <td>${team.D}</td>
+                            <td>${team.L}</td>
+                            <td>${team.GF}</td>
+                            <td>${team.GA}</td>
+                            <td>${team.GD}</td>
+                            <td>${team.PTS}</td>
+                        </tr>
+                    `;
+                });
 
-        let tableHTML = `<h2>${group}</h2><table><tr>
-            <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr>`;
+                html += `
+                    <div class="group-card">
+                        <h3>${group}</h3>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
+                                    <th>GF</th><th>GA</th><th>GD</th><th>PTS</th>
+                                </tr>
+                            </thead>
+                            <tbody>${tableRows}</tbody>
+                        </table>
+                    </div>
+                `;
 
-        data.forEach(team => {
-            tableHTML += `<tr>
-                <td>${team.Team}</td>
-                <td>${team.P}</td>
-                <td>${team.W}</td>
-                <td>${team.D}</td>
-                <td>${team.L}</td>
-                <td>${team.GF}</td>
-                <td>${team.GA}</td>
-                <td>${team.GD}</td>
-                <td>${team.Pts}</td>
-            </tr>`;
-        });
-
-        tableHTML += `</table>`;
-        container.innerHTML += tableHTML;
-    }
-}
-
-// Fetch and display fixtures
-async function fetchFixtures() {
-    const url = `https://opensheet.elk.sh/${sheetId}/${fixturesSheet}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    
-    let fixturesHTML = `<h2>Fixtures</h2>`;
-
-    data.forEach((match, index) => {
-        fixturesHTML += `<div class="match">
-            <p><strong>(${index + 1}) ${match.Team1}</strong> vs <strong>${match.Team2}</strong></p>
-            <p>⏰ ${match.Time} | 📍 ${match.Venue}</p>
-            <p>Score: <strong>${match.Score || "TBD"}</strong></p>
-        </div>`;
+                document.getElementById("standings-content").innerHTML = html;
+            });
     });
-
-    document.getElementById("fixtures-list").innerHTML = fixturesHTML;
 }
 
-// Switch tabs
+// Load Fixtures
+function loadFixtures() {
+    fetch(`${BASE_URL}/Fixtures`)
+        .then(response => response.json())
+        .then(data => {
+            let html = "";
+            let matchNumber = 1;
+
+            data.forEach(match => {
+                html += `
+                    <div class="fixture-card">
+                        <div class="match">
+                            <span class="match-number">(${matchNumber})</span> 
+                            <span class="team">${match['Team 1']}</span> 
+                            <span class="vs">vs</span> 
+                            <span class="team">${match['Team 2']}</span>
+                        </div>
+                        <div class="details">
+                            <span class="time">${match['Time']}</span> |
+                            <span class="venue">${match['Venue']}</span>
+                        </div>
+                    </div>
+                `;
+                matchNumber++;
+            });
+
+            document.getElementById("fixtures-content").innerHTML = html;
+        });
+}
+
+// Random Quote Generator for Footer
+function generateQuote() {
+    const quotes = [
+        "Hard work beats talent when talent doesn't work hard.",
+        "The game is won in the mind before it is played on the field.",
+        "Champions keep playing until they get it right.",
+        "Football is more than a game. It’s a passion, a discipline, and a way of life."
+    ];
+    document.getElementById("quote").innerText = quotes[Math.floor(Math.random() * quotes.length)];
+}
+
+// Tab switching function
 function showTab(tab) {
-    document.getElementById("points").style.display = tab === "points" ? "block" : "none";
-    document.getElementById("fixtures").style.display = tab === "fixtures" ? "block" : "none";
+    document.getElementById("standings").style.display = tab === 'standings' ? "block" : "none";
+    document.getElementById("fixtures").style.display = tab === 'fixtures' ? "block" : "none";
 }
 
-// Random quote generator for footer
-const quotes = [
-    "Champions keep playing until they get it right.",
-    "Hard work beats talent when talent doesn’t work hard.",
-    "Success is no accident. It’s hard work and persistence.",
-    "Football is a game of mistakes. Whoever makes the fewest wins."
-];
-document.getElementById("quote").innerText = quotes[Math.floor(Math.random() * quotes.length)];
-
-// Fetch data on load
-fetchPoints();
-fetchFixtures();
+// Load Data on Startup
+document.addEventListener("DOMContentLoaded", () => {
+    loadStandings();
+    loadFixtures();
+    generateQuote();
+    showTab('standings'); // Default to standings
+    setInterval(loadStandings, 30000);
+    setInterval(loadFixtures, 30000);
+    setInterval(generateQuote, 60000);
+});
