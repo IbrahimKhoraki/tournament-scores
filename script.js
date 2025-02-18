@@ -30,7 +30,7 @@ function loadStandings() {
                 html += `
                     <div class="group-card">
                         <h3>${group}</h3>
-                        <table class="table table-striped standings-table">
+                        <table class="standings-table">
                             <thead>
                                 <tr>
                                     <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
@@ -87,18 +87,11 @@ function generateQuote() {
     document.getElementById("quote").innerText = quotes[Math.floor(Math.random() * quotes.length)];
 }
 
-// Tab switching function
-function showTab(tab) {
-    document.getElementById("standings").style.display = tab === 'standings' ? "block" : "none";
-    document.getElementById("fixtures").style.display = tab === 'fixtures' ? "block" : "none";
-}
-
 // Load Data on Startup
 document.addEventListener("DOMContentLoaded", () => {
     loadStandings();
     loadFixtures();
     generateQuote();
-    showTab('standings'); // Default to standings
     setInterval(loadStandings, 30000);
     setInterval(loadFixtures, 30000);
 });
