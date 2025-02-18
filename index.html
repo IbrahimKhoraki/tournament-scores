@@ -4,17 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ICAE 2025 FOOTBALL SCOREBOARD</title>
+    
+    <!-- Bootstrap & Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;700&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+    
     <style>
-        body { 
-            background: #1B1B1B; 
-            color: white; 
-            font-family: 'Poppins', sans-serif;
+        /* General Styling */
+        body {
+            background-color: #1c1f26;
+            color: #ffffff;
+            font-family: 'Raleway', sans-serif;
         }
-        .navbar { background: #0A0A0A; padding: 15px; }
-        .navbar-brand { font-size: 24px; font-weight: bold; color: #F6C500; }
-        .tab-buttons { text-align: center; margin: 20px 0; }
-        .tab-buttons button { 
-            background: #F6C500; color: black; 
-            border: none; padding: 10px 20px; 
-            font
+
+        .container {
+            max-width: 900px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            font-weight: 700;
+            text-align: center;
+            background: linear-gradient(to right, #ff9800, #ff5722);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs .nav-link {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .nav-tabs .nav-link.active {
+            background-color: #ff9800;
+            border-color: #ff9800;
+        }
+
+        .card {
+            background: #252a34;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.5);
+        }
+
+        .table thead {
+            background: #ff9800;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 14px;
+            padding: 10px;
+            background: #181b21;
+            color: #bbb;
+        }
+
+        /* Fixtures */
+        .fixture {
+            background: #252a34;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>ICAE 2025 FOOTBALL SCOREBOARD</h1>
+
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs justify-content-center" id="scoreboardTabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="points-tab" data-bs-toggle="tab" href="#pointsTable">Standings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="fixtures-tab" data-bs-toggle="tab" href="#fixtures">Fixtures</a>
+            </li>
+        </ul>
+
+        <div class="tab-content mt-4">
+            <!-- Points Table -->
+            <div class="tab-pane fade show active" id="pointsTable">
+                <div id="groups"></div>
+            </div>
+
+            <!-- Fixtures Section -->
+            <div class="tab-pane fade" id="fixtures">
+                <div id="fixturesList"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            ICAE 2025 Football Tournament | Organized by ICAE Sports Committee <br>
+            "Victory belongs to those who prepare the most." – Anonymous
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>
