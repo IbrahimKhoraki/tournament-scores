@@ -3,7 +3,7 @@ const BASE_URL = `https://opensheet.elk.sh/${SHEET_ID}`;
 
 // Load Standings
 function loadStandings() {
-    const groups = ["Group A", "Group B", "Group C"]; // Fixed order
+    const groups = ["Group A", "Group B", "Group C"];
     let html = "";
 
     groups.forEach(group => {
@@ -53,13 +53,10 @@ function loadFixtures() {
         .then(response => response.json())
         .then(data => {
             let html = "";
-            let matchNumber = 1;
-
             data.forEach(match => {
                 html += `
                     <div class="fixture-card">
                         <div class="match">
-                            <span class="match-number">(${matchNumber})</span> 
                             <span class="team">${match['Team 1']}</span> 
                             <span class="vs">vs</span> 
                             <span class="team">${match['Team 2']}</span>
@@ -70,22 +67,10 @@ function loadFixtures() {
                         </div>
                     </div>
                 `;
-                matchNumber++;
             });
 
             document.getElementById("fixtures-content").innerHTML = html;
         });
-}
-
-// Random Quote Generator for Footer
-function generateQuote() {
-    const quotes = [
-        "Hard work beats talent when talent doesn't work hard.",
-        "The game is won in the mind before it is played on the field.",
-        "Champions keep playing until they get it right.",
-        "Football is more than a game. It’s a passion, a discipline, and a way of life."
-    ];
-    document.getElementById("quote").innerText = quotes[Math.floor(Math.random() * quotes.length)];
 }
 
 // Tab switching function
@@ -98,9 +83,7 @@ function showTab(tab) {
 document.addEventListener("DOMContentLoaded", () => {
     loadStandings();
     loadFixtures();
-    generateQuote();
     showTab('standings'); // Default to standings
     setInterval(loadStandings, 30000);
     setInterval(loadFixtures, 30000);
-    setInterval(generateQuote, 60000);
 });
