@@ -4,155 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ICAE 2025 FOOTBALL SCOREBOARD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Oswald', sans-serif;
-            background: linear-gradient(to bottom, #0f1d0f, #1b3d1b);
-            color: #fff;
+            background-color: #003300; /* Dark green background */
+            color: white;
+            font-family: 'Arial', sans-serif;
             text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        
-        header {
-            background: #222;
-            color: #FFD700;
-            padding: 20px 0;
-            font-size: 28px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            background: rgba(255, 255, 255, 0.1);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
         }
-
-        .group-buttons {
+        h1 {
+            font-size: 28px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: #ffa500; /* Orange banner */
+            padding: 15px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        .scoreboard-container {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin-bottom: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
         }
-
-        .group-buttons button {
-            background: #FFD700;
-            color: #0f1d0f;
-            border: none;
-            padding: 12px 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: 0.3s;
-            font-weight: 600;
-            text-transform: uppercase;
+        .table-container {
+            background: white;
+            color: black;
+            margin: 10px;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
         }
-
-        .group-buttons button:hover {
-            background: #daa520;
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
         }
-
-        table, th, td {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
         th, td {
-            padding: 12px;
+            padding: 10px;
+            border: 1px solid #ddd;
             text-align: center;
         }
-
         th {
-            background: #FFD700;
-            color: #0f1d0f;
-            font-weight: 600;
-        }
-
-        tr:nth-child(even) {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        tr:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .loading {
-            font-size: 14px;
-            color: #FFD700;
-            margin-top: 10px;
-        }
-
-        footer {
-            background: #222;
+            background-color: #004d00; /* Dark green */
             color: white;
-            padding: 10px;
-            margin-top: 20px;
-            font-size: 14px;
+            font-size: 16px;
         }
-
+        td {
+            font-size: 14px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
-    <header>ICAE 2025 FOOTBALL SCOREBOARD</header>
-
-    <div class="container">
-        <div class="group-buttons">
-            <button onclick="fetchData('Group A')">Group A</button>
-            <button onclick="fetchData('Group B')">Group B</button>
-            <button onclick="fetchData('Group C')">Group C</button>
-        </div>
-
-        <div id="scoreboard">
-            <p class="loading">Select a group to view scores.</p>
-        </div>
-    </div>
-
-    <footer>
-        &copy; 2025 ICAE Football Tournament
-    </footer>
+    <h1>ICAE 2025 FOOTBALL SCOREBOARD</h1>
+    <div class="scoreboard-container" id="scoreboard"></div>
 
     <script>
-        function fetchData(group) {
-            document.getElementById('scoreboard').innerHTML = `<p class="loading">Loading ${group} scores...</p>`;
-            
-            // Simulate fetching data (Replace with actual API request)
-            setTimeout(() => {
-                let data = `
-                    <table>
-                        <tr>
-                            <th>Team</th>
-                            <th>Played</th>
-                            <th>Won</th>
-                            <th>Drawn</th>
-                            <th>Lost</th>
-                            <th>Points</th>
-                        </tr>
-                        <tr>
-                            <td>Team A</td><td>3</td><td>2</td><td>1</td><td>0</td><td>7</td>
-                        </tr>
-                        <tr>
-                            <td>Team B</td><td>3</td><td>2</td><td>0</td><td>1</td><td>6</td>
-                        </tr>
-                        <tr>
-                            <td>Team C</td><td>3</td><td>1</td><td>1</td><td>1</td><td>4</td>
-                        </tr>
-                    </table>
-                `;
-                document.getElementById('scoreboard').innerHTML = data;
-            }, 1000);
+        const API_KEY = "AIzaSyCSKNE4g5uH91BabYfb6qw-DpRD6kW2qJ0";
+        const SHEET_ID = "1iIvuXpvHRg0nVquJ38LVQZAjpFYjampoVGiK-5fwmQo";
+        const GROUPS = ["Group A", "Group B", "Group C"]; // Add more if needed
+
+        async function fetchData(sheetName) {
+            const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${sheetName}?key=${API_KEY}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.values || [];
         }
+
+        async function loadScoreboard() {
+            const scoreboardContainer = document.getElementById("scoreboard");
+
+            for (const group of GROUPS) {
+                const data = await fetchData(group);
+                if (data.length < 2) continue;
+
+                let tableHTML = `<div class="table-container">
+                    <h2>${group}</h2>
+                    <table>
+                        <thead>
+                            <tr>${data[0].map(header => `<th>${header}</th>`).join('')}</tr>
+                        </thead>
+                        <tbody>
+                            ${data.slice(1).map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
+                        </tbody>
+                    </table>
+                </div>`;
+
+                scoreboardContainer.innerHTML += tableHTML;
+            }
+        }
+
+        loadScoreboard();
     </script>
 
 </body>
