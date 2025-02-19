@@ -103,8 +103,8 @@ function showRandomQuote() {
     document.getElementById('quote-container').innerHTML = `
         <p class="pulse">"${randomQuote.quote}"</p>
         <p style="margin-top: 0.5rem; color: ${accentColor};">– ${randomQuote.author}</p>
-        <p style="font-size: 0.9rem; margin-top: 1rem;">
-            Scores are refreshed automatically every 30 seconds. Should the updated scores not appear, kindly refresh the page.
+        <p style="font-size: 0.9rem; margin-top: 1rem; font-family: 'Lora', serif; font-style: normal;">
+            The scoreboard refreshes automatically every 30 seconds. If the latest scores are not visible, please refresh your browser.
         </p>
     `;
 }
