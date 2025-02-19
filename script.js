@@ -76,16 +76,16 @@ function loadFixtures() {
           <div style="text-align: right; font-size: 1.1rem;">
             ${match['Team 1']}
           </div>
-          <!-- Center column: vs badge, time/venue, and score -->
-          <div style="text-align: center;">
-            <div class="vs-badge">VS</div>
-            <!-- Additional spacing between time & venue -->
-            <div style="color: ${accentColor}; margin: 0.3rem 0;">
-              ${match['Time']} &nbsp;&nbsp;⚽&nbsp;&nbsp;${match['Venue']}
-            </div>
-            <!-- Margin added above the score for clearer spacing -->
-            <div style="font-size: 1.1rem; margin-top: 0.3rem;">
-              ${match['Score']}
+          <!-- Center column: wrapped in center-container for PC, adjusted for mobile -->
+          <div class="center-column" style="text-align: center;">
+            <div class="center-container" style="display: flex; flex-direction: column; align-items: center; justify-content: space-around;">
+              <div class="vs-badge">VS</div>
+              <div style="color: ${accentColor};">
+                ${match['Time']} &nbsp;&nbsp;⚽&nbsp;&nbsp;${match['Venue']}
+              </div>
+              <div style="font-size: 1.1rem;">
+                ${match['Score']}
+              </div>
             </div>
           </div>
           <!-- Right column: Team 2 -->
