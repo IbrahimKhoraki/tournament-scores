@@ -203,9 +203,19 @@
         flex-direction: column;
         gap: 1rem;
       }
-      /* Removed the override for .fixture-card so it retains the PC three‑column layout */
+      /* Adjust fixture cards for mobile: force one-line text & fixed column widths */
+      .fixture-card {
+        font-size: 0.9rem;
+        grid-template-columns: 30% auto 30%;
+      }
       .fixture-card > div {
-        justify-content: center; /* Keep center alignment on mobile */
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      /* Add slight horizontal padding to the center column */
+      .fixture-card > div:nth-child(2) {
+        padding: 0 5px;
       }
       table {
         width: 100%;
