@@ -25,6 +25,9 @@ function loadStandings() {
             .then(data => {
                 if (!data.length) return;
 
+                // Sort teams so that the team with the highest points (PTS) comes first.
+                data.sort((a, b) => parseInt(b.PTS) - parseInt(a.PTS));
+
                 const tableRows = data.map(team => `
                     <tr>
                         <td class="team-name">${team['Team Name']}</td>
