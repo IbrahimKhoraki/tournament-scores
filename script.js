@@ -16,19 +16,19 @@ const FOOTBALL_QUOTES = [
 ];
 
 function loadStandings() {
+  // Display a loading message
+  document.getElementById("standings-content").innerHTML = "<p style='padding:1rem;'>Loading Standings...</p>";
   const groups = ["Group A", "Group B", "Group C"];
   const promises = groups.map(group => {
     return fetch(`${BASE_URL}/${group}`)
       .then(response => response.json())
       .then(data => {
-        if (!data.length) {
-          // Fallback content if no data is returned
+        if (!data || !data.length) {
           return `<div class="group-card">
                     <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
                     <p style="padding: 1rem;">No Data Available</p>
                   </div>`;
         }
-        // Sort teams so that the team with the highest points comes first.
         data.sort((a, b) => parseInt(b.PTS) - parseInt(a.PTS));
         const tableRows = data.map(team => `
           <tr>
@@ -43,23 +43,21 @@ function loadStandings() {
             <td class="pts-cell">${team.PTS}</td>
           </tr>
         `).join('');
-        return `
-          <div class="group-card">
-            <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
-                  <th>GF</th><th>GA</th><th>GD</th><th>PTS</th>
-                </tr>
-              </thead>
-              <tbody>${tableRows}</tbody>
-            </table>
-          </div>
-        `;
+        return `<div class="group-card">
+                  <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
+                        <th>GF</th><th>GA</th><th>GD</th><th>PTS</th>
+                      </tr>
+                    </thead>
+                    <tbody>${tableRows}</tbody>
+                  </table>
+                </div>`;
       })
       .catch(error => {
-        console.error('Error loading standings:', error);
+        console.error('Error loading standings for', group, error);
         return `<div class="group-card">
                   <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
                   <p style="padding: 1rem;">Error loading data</p>
@@ -67,4 +65,88 @@ function loadStandings() {
       });
   });
   Promise.all(promises).then(results => {
- 
+    let content = results.join('');
+    if (!content.trim()) {
+      content = "<p style='padding:1rem;'>No Standings Data Available</p>";
+    }
+    document.getElementById("standings-content").innerHTML = content;
+  });
+}
+
+function loadFixtures() {
+  // Display a loading message
+  document.getElementById("fixtures-content").innerHTML = "<p style='padding:1rem;'>Loading Fixtures...</p>";
+  fetch(`${BASE_URL}/Fixtures`)
+    .then(response => response.json())
+    .then(data => {
+      if (!data || !data.length) {
+        document.getElementById("fixtures-content").innerHTML = "<p style='padding:1rem;'>No Fixtures Available</p>";
+        return;
+      }
+      const accentColor = getComputedStyle(document.documentElement)
+                            .getPropertyValue('--accent').trim();
+      const html = data.map(match => `
+        <div class="fixture-card">
+          <!-- Left column: Team 1 -->
+          <div style="text-align: right; font-size: 1.1rem;">
+            ${match['Team 1']}
+          </div>
+          <!-- Center column: wrapped in center-container -->
+          <div class="center-column" style="text-align: center;">
+            <div class="center-container">
+              <div class="vs-badge">VS</div>
+              <div style="color: ${accentColor};">
+                ${match['Time']} &nbsp;&nbsp;⚽&nbsp;&nbsp;${match['Venue']}
+              </div>
+              <div style="font-size: 1.1rem; margin-top: 0.3rem;">
+                ${match['Score']}
+              </div>
+            </div>
+          </div>
+          <!-- Right column: Team 2 -->
+          <div style="text-align: left; font-size: 1.1rem;">
+            ${match['Team 2']}
+          </div>
+        </div>
+      `).join('');
+      document.getElementById("fixtures-content").innerHTML = html;
+    })
+    .catch(error => {
+      console.error('Error loading fixtures:', error);
+      document.getElementById("fixtures-content").innerHTML = "<p style='padding:1rem;'>Error loading fixtures</p>";
+    });
+}
+
+function showRandomQuote() {
+  const randomQuote = FOOTBALL_QUOTES[Math.floor(Math.random() * FOOTBALL_QUOTES.length)];
+  const accentColor = getComputedStyle(document.documentElement)
+                        .getPropertyValue('--accent').trim();
+  document.getElementById('quote-container').innerHTML = `
+    <p class="pulse">"${randomQuote.quote}"</p>
+    <p style="margin-top: 0.5rem; color: ${accentColor};">– ${randomQuote.author}</p>
+    <p style="font-size: 0.9rem; margin-top: 1rem; font-family: 'Lora', serif; font-style: normal;">
+      The scoreboard refreshes automatically every 30 seconds. If the latest scores are not visible, please refresh your browser.
+    </p>
+  `;
+}
+
+function showTab(tab) {
+  document.querySelectorAll('.content').forEach(el => el.style.display = 'none');
+  document.getElementById(tab).style.display = 'block';
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.classList.toggle('active', item.getAttribute("onclick").includes(tab));
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM fully loaded; initializing content...");
+  loadStandings();
+  loadFixtures();
+  showRandomQuote();
+  showTab('standings');
+  setInterval(() => {
+    loadStandings();
+    loadFixtures();
+    showRandomQuote();
+  }, 30000);
+});
