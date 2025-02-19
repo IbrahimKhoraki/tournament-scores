@@ -27,7 +27,7 @@ function loadStandings() {
 
                 const tableRows = data.map(team => `
                     <tr>
-                        <td>${team['Team Name']}</td>
+                        <td class="team-name">${team['Team Name']}</td>
                         <td>${team.P}</td>
                         <td>${team.W}</td>
                         <td>${team.D}</td>
@@ -41,7 +41,7 @@ function loadStandings() {
 
                 const html = `
                     <div class="group-card">
-                        <h3 style="padding: 1rem; margin: 0; font-size: 1.4rem;">${group}</h3>
+                        <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
                         <table>
                             <thead>
                                 <tr>
