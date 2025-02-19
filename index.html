@@ -58,7 +58,7 @@
       text-transform: uppercase;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
       color: var(--text);
-      font-weight: 400; /* Removed bold style */
+      font-weight: 400;
     }
     
     .nav-tabs {
@@ -79,7 +79,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
       border: 2px solid transparent;
-      font-weight: 400; /* Removed bold style */
+      font-weight: 400;
     }
     
     .nav-item.active {
@@ -126,9 +126,9 @@
       padding: 1rem;
       border-bottom: 1px solid rgba(255,255,255,0.05);
       font-family: Arial, sans-serif;
-      font-weight: normal; /* Removed bold */
-      font-variant-numeric: tabular-nums; /* Align numerals */
-      text-align: center; /* Center numeric columns */
+      font-weight: normal;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
     }
     
     .pts-cell {
@@ -140,23 +140,25 @@
       font-family: 'Montserrat', sans-serif;
     }
     
+    /* Fixtures card for PC version */
     .fixture-card {
       background: rgba(0,0,0,0.3);
       border-radius: 8px;
       padding: 1.5rem;
       margin-bottom: 1rem;
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
       border: 1px solid rgba(255,255,255,0.1);
       position: relative;
     }
     
-    /* Align each fixture column on the same baseline */
-    .fixture-card > div {
+    /* Center container wraps the center column content */
+    .center-container {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-around;
     }
     
     .vs-badge {
@@ -203,17 +205,25 @@
         flex-direction: column;
         gap: 1rem;
       }
-      /* Keep the 3-column layout but allow wrapping */
+      /* Switch fixture card to a single-row flex layout */
       .fixture-card {
-        font-size: 0.9rem;
-        grid-template-columns: 30% auto 30%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.8rem;
       }
       .fixture-card > div {
-        white-space: normal;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-      table {
-        width: 100%;
-        table-layout: auto;
+      /* In mobile, force the center container to be inline with horizontal layout */
+      .center-container {
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
       }
     }
     
