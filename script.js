@@ -79,11 +79,12 @@ function loadFixtures() {
           <!-- Center column: vs badge, time/venue, and score -->
           <div style="text-align: center;">
             <div class="vs-badge">VS</div>
-            <!-- Added explicit spacing between time & venue -->
+            <!-- Additional spacing between time & venue -->
             <div style="color: ${accentColor}; margin: 0.3rem 0;">
               ${match['Time']} &nbsp;&nbsp;⚽&nbsp;&nbsp;${match['Venue']}
             </div>
-            <div style="font-size: 1.1rem;">
+            <!-- Margin added above the score for clearer spacing -->
+            <div style="font-size: 1.1rem; margin-top: 0.3rem;">
               ${match['Score']}
             </div>
           </div>
