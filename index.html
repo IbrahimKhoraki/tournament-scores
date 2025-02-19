@@ -97,7 +97,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed; /* Fixed layout for standings */
+      table-layout: fixed;
     }
     th {
       background: rgba(0,0,0,0.4);
@@ -128,12 +128,12 @@
       padding: 1.5rem;
       margin-bottom: 1rem;
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr; /* Three equal columns */
+      grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
       border: 1px solid rgba(255,255,255,0.1);
       position: relative;
     }
-    /* Center container wraps center column content */
+    /* Center container wraps the center column content */
     .center-container {
       display: flex;
       flex-direction: column;
@@ -169,26 +169,42 @@
       50% { opacity: 1; }
       100% { opacity: 0.8; }
     }
-    /* --- Mobile Styles for Fixtures Only --- */
+    /* --- MOBILE OVERRIDES ONLY --- */
     @media (max-width: 768px) {
+      /* Fixtures mobile overrides */
       .fixture-card {
         display: flex;
         flex-direction: row;
-        align-items: center;
         justify-content: space-between;
-        font-size: 0.8rem;
+        align-items: center;
+        font-size: 0.7rem;
       }
       .fixture-card > div {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        flex: 1;
+        padding: 0 5px;
       }
-      /* Force center container inline on mobile */
+      /* Remove VS icon on mobile */
+      .vs-badge {
+        display: none;
+      }
+      /* Center container forced inline for one-line layout */
       .center-container {
         display: inline-flex;
         flex-direction: row;
         align-items: center;
         gap: 5px;
+      }
+      /* Standings table mobile overrides */
+      #standings table th, 
+      #standings table td {
+        font-size: 0.7rem;
+        padding: 0.5rem;
+      }
+      .team-name {
+        font-size: 0.7rem;
       }
     }
     @media (max-width: 480px) {
