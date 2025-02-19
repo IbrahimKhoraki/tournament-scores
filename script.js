@@ -79,10 +79,10 @@ function loadFixtures() {
           <!-- Center column: vs badge, time/venue, and score -->
           <div style="text-align: center;">
             <div class="vs-badge">VS</div>
-            <div style="color: ${accentColor};">
+            <div style="color: ${accentColor}; margin-bottom: 0.3rem;">
               ${match['Time']} ⚽ ${match['Venue']}
             </div>
-            <div style="margin-top: 0.5rem; font-size: 1.1rem;">
+            <div style="font-size: 1.1rem;">
               ${match['Score']}
             </div>
           </div>
