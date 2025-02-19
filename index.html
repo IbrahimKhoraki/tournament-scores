@@ -97,7 +97,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed;
+      table-layout: fixed; /* Fixed layout for standings */
     }
     th {
       background: rgba(0,0,0,0.4);
@@ -180,6 +180,7 @@
         font-size: 0.7rem;
       }
       .fixture-card > div {
+        /* Allow text to wrap fully */
         white-space: normal;
         overflow: visible;
         text-overflow: clip;
@@ -190,21 +191,25 @@
       .vs-badge {
         display: none;
       }
-      /* Center container forced inline for one-line layout */
+      /* Force center container inline for one-line layout */
       .center-container {
         display: inline-flex;
         flex-direction: row;
         align-items: center;
         gap: 5px;
       }
+      /* Reduce score font further on mobile */
+      .center-container .score {
+        font-size: 0.5rem;
+      }
       /* Standings table mobile overrides */
       #standings table th, 
       #standings table td {
-        font-size: 0.7rem;
-        padding: 0.5rem;
+        font-size: 0.6rem;
+        padding: 0.4rem;
       }
       .team-name {
-        font-size: 0.7rem;
+        font-size: 0.6rem;
       }
     }
     @media (max-width: 480px) {
