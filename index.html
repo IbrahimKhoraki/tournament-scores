@@ -203,19 +203,14 @@
         flex-direction: column;
         gap: 1rem;
       }
-      /* Adjust fixture cards for mobile: force one-line text & fixed column widths */
+      /* Keep the 3-column layout but remove truncation so names won't be cut off */
       .fixture-card {
         font-size: 0.9rem;
         grid-template-columns: 30% auto 30%;
       }
       .fixture-card > div {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      /* Add slight horizontal padding to the center column */
-      .fixture-card > div:nth-child(2) {
-        padding: 0 5px;
+        /* Allow wrapping if needed */
+        white-space: normal;
       }
       table {
         width: 100%;
