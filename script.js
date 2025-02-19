@@ -16,7 +16,6 @@ const FOOTBALL_QUOTES = [
 ];
 
 function loadStandings() {
-  // Display a loading message
   document.getElementById("standings-content").innerHTML = "<p style='padding:1rem;'>Loading Standings...</p>";
   const groups = ["Group A", "Group B", "Group C"];
   const promises = groups.map(group => {
@@ -74,7 +73,6 @@ function loadStandings() {
 }
 
 function loadFixtures() {
-  // Display a loading message
   document.getElementById("fixtures-content").innerHTML = "<p style='padding:1rem;'>Loading Fixtures...</p>";
   fetch(`${BASE_URL}/Fixtures`)
     .then(response => response.json())
@@ -98,7 +96,7 @@ function loadFixtures() {
               <div style="color: ${accentColor};">
                 ${match['Time']} &nbsp;&nbsp;⚽&nbsp;&nbsp;${match['Venue']}
               </div>
-              <div style="font-size: 1.1rem; margin-top: 0.3rem;">
+              <div class="score" style="font-size: 1.1rem; margin-top: 0.3rem;">
                 ${match['Score']}
               </div>
             </div>
