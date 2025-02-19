@@ -203,13 +203,12 @@
         flex-direction: column;
         gap: 1rem;
       }
-      /* Keep the 3-column layout but remove truncation so names won't be cut off */
+      /* Keep the 3-column layout but allow wrapping */
       .fixture-card {
         font-size: 0.9rem;
         grid-template-columns: 30% auto 30%;
       }
       .fixture-card > div {
-        /* Allow wrapping if needed */
         white-space: normal;
       }
       table {
