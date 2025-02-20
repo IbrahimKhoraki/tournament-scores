@@ -133,7 +133,7 @@
       border: 1px solid rgba(255,255,255,0.1);
       position: relative;
     }
-    /* Center container wraps the center column content */
+    /* Center container wraps center column content */
     .center-container {
       display: flex;
       flex-direction: column;
@@ -187,29 +187,29 @@
         flex: 1;
         padding: 0 5px;
       }
-      /* Remove VS icon on mobile */
-      .vs-badge {
-        display: none;
-      }
-      /* Force center container inline for one-line layout */
+      /* In mobile, make the center container a column so the score appears below time/venue */
       .center-container {
-        display: inline-flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        gap: 5px;
+        gap: 2px;
       }
-      /* Reduce score font further on mobile */
+      /* Reduce the score font a bit more */
       .center-container .score {
         font-size: 0.5rem;
       }
       /* Standings table mobile overrides */
       #standings table th, 
       #standings table td {
-        font-size: 0.6rem;
-        padding: 0.4rem;
+        font-size: 0.7rem;
+        padding: 0.5rem;
+      }
+      /* Increase gap for team name column so it doesn’t overlap the next column */
+      #standings table td:first-child {
+        width: 40%;
+        padding-right: 8px;
       }
       .team-name {
-        font-size: 0.6rem;
+        font-size: 0.7rem;
       }
     }
     @media (max-width: 480px) {
