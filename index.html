@@ -167,9 +167,10 @@
       50% { opacity: 1; }
       100% { opacity: 0.8; }
     }
-    /* MOBILE ONLY OVERRIDES */
+
+    /* --- MOBILE ONLY OVERRIDES --- */
     @media (max-width: 768px) {
-      /* Standings table: switch to auto layout for responsive column widths */
+      /* Standings table: use auto layout for responsive widths */
       #standings table {
         table-layout: auto !important;
       }
@@ -179,17 +180,19 @@
         grid-template-columns: 40% auto 40% !important;
         font-size: 0.7rem;
       }
-      /* Align left column (Team 1) to right, center remains centered, right column (Team 2) to left */
+      /* Align left column (Team 1) right, center remains centered, right column (Team 2) left */
       .fixture-card > div:nth-child(1) {
         text-align: right;
+        padding-right: 10px; /* Added padding for extra gap */
       }
       .fixture-card > div:nth-child(2) {
         text-align: center;
       }
       .fixture-card > div:nth-child(3) {
         text-align: left;
+        padding-left: 10px; /* Added padding for extra gap */
       }
-      /* Center container remains column, score on separate line */
+      /* Center container: keep as column so score appears below time/venue */
       .center-container {
         flex-direction: column;
         align-items: center;
