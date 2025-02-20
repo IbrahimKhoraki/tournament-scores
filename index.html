@@ -97,7 +97,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed; /* Fixed layout for standings */
+      table-layout: fixed;
     }
     th {
       background: rgba(0,0,0,0.4);
@@ -121,7 +121,7 @@
     .team-name {
       font-family: 'Montserrat', sans-serif;
     }
-    /* --- Fixtures Styles (PC Version) --- */
+    /* Fixtures Styles */
     .fixture-card {
       background: rgba(0,0,0,0.3);
       border-radius: 8px;
@@ -133,7 +133,6 @@
       border: 1px solid rgba(255,255,255,0.1);
       position: relative;
     }
-    /* Center container wraps the center column content */
     .center-container {
       display: flex;
       flex-direction: column;
@@ -156,7 +155,6 @@
       border-top: 1px solid rgba(255,255,255,0.1);
       font-family: Arial, sans-serif;
     }
-    /* Footer quotes use Playfair Display */
     .footer p {
       font-style: italic;
       font-family: 'Playfair Display', serif;
@@ -169,9 +167,8 @@
       50% { opacity: 1; }
       100% { opacity: 0.8; }
     }
-    /* --- MOBILE OVERRIDES ONLY --- */
+    /* Mobile Overrides */
     @media (max-width: 768px) {
-      /* Fixtures mobile overrides */
       .fixture-card {
         display: flex;
         flex-direction: row;
@@ -180,34 +177,28 @@
         font-size: 0.7rem;
       }
       .fixture-card > div {
-        /* Allow text to wrap fully */
         white-space: normal;
         overflow: visible;
         text-overflow: clip;
         flex: 1;
         padding: 0 5px;
       }
-      /* In mobile, force the center container as a column so score goes beneath time/venue */
       .center-container {
         flex-direction: column;
         align-items: center;
         gap: 2px;
       }
-      /* Reduce the score font a bit more */
       .center-container .score {
         font-size: 0.5rem;
       }
-      /* Standings table mobile overrides */
       #standings table th, 
       #standings table td {
         font-size: 0.7rem;
         padding: 0.5rem;
       }
-      /* Increase gap for team name column */
-      #standings table th:first-child,
       #standings table td:first-child {
-        width: 80% !important;
-        padding-right: 30px !important;
+        width: 65%;
+        padding-right: 20px;
       }
       .team-name {
         font-size: 0.7rem;
