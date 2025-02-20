@@ -94,10 +94,11 @@
       height: 4px;
       background: linear-gradient(90deg, var(--secondary), var(--accent));
     }
+    /* By default, we use table-layout: fixed for PC */
     table {
       width: 100%;
       border-collapse: collapse;
-      table-layout: fixed; /* Keep fixed layout for standings */
+      table-layout: fixed;
     }
     th {
       background: rgba(0,0,0,0.4);
@@ -121,7 +122,7 @@
     .team-name {
       font-family: 'Montserrat', sans-serif;
     }
-    /* --- Fixtures Styles (PC Version) --- */
+    /* Fixtures for PC */
     .fixture-card {
       background: rgba(0,0,0,0.3);
       border-radius: 8px;
@@ -133,7 +134,6 @@
       border: 1px solid rgba(255,255,255,0.1);
       position: relative;
     }
-    /* Center container wraps the center column content */
     .center-container {
       display: flex;
       flex-direction: column;
@@ -169,9 +169,15 @@
       50% { opacity: 1; }
       100% { opacity: 0.8; }
     }
+
     /* --- MOBILE ONLY OVERRIDES --- */
     @media (max-width: 768px) {
-      /* Fixtures: remains as is */
+      /* For mobile, we switch to table-layout: auto so column widths actually obey CSS widths */
+      #standings table {
+        table-layout: auto !important;
+      }
+
+      /* Make the fixture card a single row */
       .fixture-card {
         display: flex;
         flex-direction: row;
@@ -195,20 +201,22 @@
         font-size: 0.5rem;
       }
 
-      /* Standings: widen the first column to create a bigger gap from "P" column */
-      #standings table th,
+      /* Widen first column to 85% and add 60px right padding for big gap from P column */
+      #standings table th, 
       #standings table td {
         font-size: 0.7rem;
         padding: 0.5rem;
       }
+      #standings table th:first-child,
       #standings table td:first-child {
-        width: 70% !important;
-        padding-right: 40px !important;
+        width: 85% !important;
+        padding-right: 60px !important;
       }
       .team-name {
         font-size: 0.7rem;
       }
     }
+
     @media (max-width: 480px) {
       th, td {
         padding: 0.5rem;
