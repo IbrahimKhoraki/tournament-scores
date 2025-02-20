@@ -133,7 +133,7 @@
       border: 1px solid rgba(255,255,255,0.1);
       position: relative;
     }
-    /* Center container wraps center column content */
+    /* Center container wraps the center column content */
     .center-container {
       display: flex;
       flex-direction: column;
@@ -187,7 +187,7 @@
         flex: 1;
         padding: 0 5px;
       }
-      /* In mobile, make the center container a column so the score appears below time/venue */
+      /* In mobile, force the center container as a column so score goes beneath time/venue */
       .center-container {
         flex-direction: column;
         align-items: center;
@@ -205,8 +205,8 @@
       }
       /* Increase gap for team name column so it doesn’t overlap the next column */
       #standings table td:first-child {
-        width: 40%;
-        padding-right: 8px;
+        width: 50%;
+        padding-right: 10px;
       }
       .team-name {
         font-size: 0.7rem;
