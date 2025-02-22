@@ -54,74 +54,21 @@
       color: var(--text);
       font-weight: 400;
     }
-    .nav-tabs {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 2rem 0;
-    }
-    .nav-item {
-      padding: 1rem 2rem;
-      cursor: pointer;
-      border-radius: 5px;
-      background: rgba(255,255,255,0.1);
-      transition: all 0.3s ease;
-      font-size: 1.1rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      border: 2px solid transparent;
-      font-weight: 400;
-    }
-    .nav-item.active {
-      background: linear-gradient(45deg, var(--secondary), var(--accent));
-      border-color: var(--secondary);
-      box-shadow: 0 4px 15px rgba(255,77,77,0.3);
-    }
-    .group-card {
-      background: rgba(0,0,0,0.3);
-      border-radius: 10px;
-      margin-bottom: 2rem;
-      border: 1px solid rgba(255,255,255,0.1);
-      position: relative;
-      overflow: hidden;
-    }
-    .group-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--secondary), var(--accent));
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-    }
-    th {
-      background: rgba(0,0,0,0.4);
-      padding: 1.2rem;
-      font-size: 1.1rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    td {
-      padding: 1rem;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-family: Arial, sans-serif;
-      font-weight: normal;
-      font-variant-numeric: tabular-nums;
+    /* Winners & Runners-Up Sections */
+    .section-title {
       text-align: center;
-    }
-    .pts-cell {
-      color: var(--accent);
-    }
-    /* Team names use Montserrat */
-    .team-name {
+      margin: 20px 0;
       font-family: 'Montserrat', sans-serif;
     }
-    /* Fixtures Styles (PC Version) */
+    .winners {
+      font-size: 2rem;
+      margin: 10px 0;
+    }
+    .runners-up {
+      font-size: 1.5rem;
+      margin: 5px 0;
+    }
+    /* Fixture card styles (same as before) */
     .fixture-card {
       background: rgba(0,0,0,0.3);
       border-radius: 8px;
@@ -167,93 +114,81 @@
       50% { opacity: 1; }
       100% { opacity: 0.8; }
     }
-
-    /* --- MOBILE ONLY OVERRIDES --- */
+    /* MOBILE OVERRIDES (responsive adjustments) */
     @media (max-width: 768px) {
-      /* Standings table: use auto layout for responsive widths */
-      #standings table {
-        table-layout: auto !important;
-      }
-      /* Fixture cards: use a grid layout with fixed 40%-auto-40% columns */
+      /* Standings are removed, so no need for nav/buttons here */
+      /* Fixture cards: make them auto-layout (grid with auto columns) for a more "zoomed out" look */
       .fixture-card {
         display: grid !important;
-        grid-template-columns: 40% auto 40% !important;
+        grid-template-columns: auto auto auto !important;
         font-size: 0.7rem;
       }
-      /* Align left column (Team 1) right, center remains centered, right column (Team 2) left */
-      .fixture-card > div:nth-child(1) {
-        text-align: right;
-        padding-right: 20px; /* Added padding for extra gap */
-      }
-      .fixture-card > div:nth-child(2) {
+      .fixture-card > div {
+        padding: 0.7rem;
         text-align: center;
       }
-      .fixture-card > div:nth-child(3) {
-        text-align: left;
-        padding-left: 20px; /* Added padding for extra gap */
-      }
-      /* Center container: keep as column so score appears below time/venue */
       .center-container {
         flex-direction: column;
         align-items: center;
         gap: 2px;
       }
       .center-container .score {
-        font-size: 0.6rem;
-      }
-      /* Standings table mobile overrides for larger gap */
-      #standings table th, 
-      #standings table td {
-        font-size: 0.7rem;
-        padding: 0.5rem;
-      }
-      #standings table th:first-child,
-      #standings table td:first-child {
-        width: 85% !important;
-        padding-right: 60px !important;
-      }
-      .team-name {
-        font-size: 0.7rem;
+        font-size: 0.5rem;
       }
     }
     @media (max-width: 480px) {
-      th, td {
-        padding: 0.5rem;
-        font-size: 0.8rem;
-      }
       h1 {
         font-size: 2.2rem;
       }
-      .nav-item {
-        padding: 0.8rem 1.5rem;
-        font-size: 1rem;
-      }
     }
   </style>
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
   <div class="container">
+    <!-- Header with Winners Title -->
     <header>
-      <h1>ICAE 2025 Football Scoreboard</h1>
-      <div class="nav-tabs">
-        <div class="nav-item active" onclick="showTab('standings')">Standings</div>
-        <div class="nav-item" onclick="showTab('fixtures')">Fixtures</div>
-      </div>
+      <h1>ICAE 2025 FOOTBALL WINNERS</h1>
     </header>
-    <div id="standings" class="content">
-      <div id="standings-content"></div>
-    </div>
-    <div id="fixtures" class="content" style="display: none;">
+    <!-- Winners Section -->
+    <section id="winners" class="section-title">
+      <h2 class="winners">Qahera Mufaddal</h2>
+    </section>
+    <!-- Runners-Up Section -->
+    <section id="runners-up" class="section-title">
+      <h3>ICAE 2025 FOOTBALL RUNNERS UP:</h3>
+      <p class="runners-up">FC Ain Shams</p>
+    </section>
+    <!-- Fixture Cards Section -->
+    <section id="fixtures">
       <div id="fixtures-content"></div>
-    </div>
+    </section>
+    <!-- Footer for Quotes -->
     <div class="footer" id="quote-container">
-      <!-- Quotes and info will be inserted here -->
+      <!-- Quotes will be inserted here -->
     </div>
   </div>
   <script src="script.js"></script>
+  <script>
+    // Launch confetti from both sides on page load
+    window.addEventListener('load', function() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: 0, y: 0.5 }
+      });
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { x: 1, y: 0.5 }
+      });
+    });
+  </script>
 </body>
 </html>
