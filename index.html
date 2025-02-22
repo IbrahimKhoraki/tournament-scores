@@ -55,20 +55,21 @@
       font-weight: 400;
     }
     /* Winners & Runners-Up Sections */
-    .section-title {
+    .section-title h2 {
       text-align: center;
-      margin: 20px 0;
       font-family: 'Montserrat', sans-serif;
-    }
-    .winners {
-      font-size: 2rem;
       margin: 10px 0;
     }
-    .runners-up {
-      font-size: 1.5rem;
-      margin: 5px 0;
+    .winner-name, .runnerup-name {
+      font-size: 2rem;
+      text-align: center;
+      margin: 10px 0;
     }
-    /* Fixture card styles (same as before) */
+    /* Extra space between winners and runners-up */
+    #runners-up {
+      margin-top: 40px;
+    }
+    /* Fixture Card Styles (unchanged from previous version) */
     .fixture-card {
       background: rgba(0,0,0,0.3);
       border-radius: 8px;
@@ -114,18 +115,27 @@
       50% { opacity: 1; }
       100% { opacity: 0.8; }
     }
-    /* MOBILE OVERRIDES (responsive adjustments) */
+    /* Existing Styles for Standings and Fixture Cards remain here... (omitted for brevity) */
+    /* MOBILE OVERRIDES (including auto layout for tables and fixture cards) */
     @media (max-width: 768px) {
-      /* Standings are removed, so no need for nav/buttons here */
-      /* Fixture cards: make them auto-layout (grid with auto columns) for a more "zoomed out" look */
+      #standings table {
+        table-layout: auto !important;
+      }
       .fixture-card {
         display: grid !important;
-        grid-template-columns: auto auto auto !important;
+        grid-template-columns: 40% auto 40% !important;
         font-size: 0.7rem;
       }
-      .fixture-card > div {
-        padding: 0.7rem;
+      .fixture-card > div:nth-child(1) {
+        text-align: right;
+        padding-right: 10px;
+      }
+      .fixture-card > div:nth-child(2) {
         text-align: center;
+      }
+      .fixture-card > div:nth-child(3) {
+        text-align: left;
+        padding-left: 10px;
       }
       .center-container {
         flex-direction: column;
@@ -135,35 +145,56 @@
       .center-container .score {
         font-size: 0.5rem;
       }
+      #standings table th, 
+      #standings table td {
+        font-size: 0.7rem;
+        padding: 0.5rem;
+      }
+      #standings table th:first-child,
+      #standings table td:first-child {
+        width: 85% !important;
+        padding-right: 60px !important;
+      }
+      .team-name {
+        font-size: 0.7rem;
+      }
     }
     @media (max-width: 480px) {
+      th, td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+      }
       h1 {
         font-size: 2.2rem;
       }
+      .nav-item {
+        padding: 0.8rem 1.5rem;
+        font-size: 1rem;
+      }
     }
   </style>
-  <!-- Google Fonts -->
+  <!-- Google Fonts and Confetti Library -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
-  <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <!-- Header with Winners Title -->
+    <!-- Header -->
     <header>
       <h1>ICAE 2025 FOOTBALL WINNERS</h1>
     </header>
     <!-- Winners Section -->
     <section id="winners" class="section-title">
-      <h2 class="winners">Qahera Mufaddal</h2>
+      <h2>ICAE 2025 FOOTBALL WINNERS</h2>
+      <h2 class="winner-name">Qahera Mufaddal</h2>
     </section>
     <!-- Runners-Up Section -->
     <section id="runners-up" class="section-title">
-      <h3>ICAE 2025 FOOTBALL RUNNERS UP:</h3>
-      <p class="runners-up">FC Ain Shams</p>
+      <h2>ICAE 2025 FOOTBALL RUNNERS UP</h2>
+      <h2 class="runnerup-name">FC Ain Shams</h2>
     </section>
     <!-- Fixture Cards Section -->
     <section id="fixtures">
