@@ -15,63 +15,6 @@ const FOOTBALL_QUOTES = [
   { quote: "You have to fight to reach your dream. You have to sacrifice and work hard for it.", author: "Lionel Messi" }
 ];
 
-function loadStandings() {
-  document.getElementById("standings-content").innerHTML = "<p style='padding:1rem;'>Loading Standings...</p>";
-  const groups = ["Group A", "Group B", "Group C"];
-  const promises = groups.map(group => {
-    return fetch(`${BASE_URL}/${group}`)
-      .then(response => response.json())
-      .then(data => {
-        if (!data || !data.length) {
-          return `<div class="group-card">
-                    <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
-                    <p style="padding: 1rem;">No Data Available</p>
-                  </div>`;
-        }
-        data.sort((a, b) => parseInt(b.PTS) - parseInt(a.PTS));
-        const tableRows = data.map(team => `
-          <tr>
-            <td class="team-name">${team['Team Name']}</td>
-            <td>${team.P}</td>
-            <td>${team.W}</td>
-            <td>${team.D}</td>
-            <td>${team.L}</td>
-            <td>${team.GF}</td>
-            <td>${team.GA}</td>
-            <td>${team.GD}</td>
-            <td class="pts-cell">${team.PTS}</td>
-          </tr>
-        `).join('');
-        return `<div class="group-card">
-                  <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
-                        <th>GF</th><th>GA</th><th>GD</th><th>PTS</th>
-                      </tr>
-                    </thead>
-                    <tbody>${tableRows}</tbody>
-                  </table>
-                </div>`;
-      })
-      .catch(error => {
-        console.error('Error loading standings for', group, error);
-        return `<div class="group-card">
-                  <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
-                  <p style="padding: 1rem;">Error loading data</p>
-                </div>`;
-      });
-  });
-  Promise.all(promises).then(results => {
-    let content = results.join('');
-    if (!content.trim()) {
-      content = "<p style='padding:1rem;'>No Standings Data Available</p>";
-    }
-    document.getElementById("standings-content").innerHTML = content;
-  });
-}
-
 function loadFixtures() {
   document.getElementById("fixtures-content").innerHTML = "<p style='padding:1rem;'>Loading Fixtures...</p>";
   fetch(`${BASE_URL}/Fixtures`)
@@ -92,7 +35,6 @@ function loadFixtures() {
           <!-- Center column: wrapped in center-container -->
           <div class="center-column" style="text-align: center;">
             <div class="center-container">
-              <div class="vs-badge">VS</div>
               <div style="color: ${accentColor};">
                 ${match['Time']} &nbsp;&nbsp;⚽&nbsp;&nbsp;${match['Venue']}
               </div>
@@ -128,22 +70,10 @@ function showRandomQuote() {
   `;
 }
 
-function showTab(tab) {
-  document.querySelectorAll('.content').forEach(el => el.style.display = 'none');
-  document.getElementById(tab).style.display = 'block';
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.toggle('active', item.getAttribute("onclick").includes(tab));
-  });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM fully loaded; initializing content...");
-  loadStandings();
   loadFixtures();
   showRandomQuote();
-  showTab('standings');
   setInterval(() => {
-    loadStandings();
     loadFixtures();
     showRandomQuote();
   }, 30000);
