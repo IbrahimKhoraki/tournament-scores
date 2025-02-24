@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ICAE 2025 Football Scoreboard</title>
+  <title>ICAE 2025 FOOTBALL SCOREBOARD</title>
   <style>
-    /* Global box-sizing */
+    /* Global Styles */
     * {
       box-sizing: border-box;
     }
@@ -13,8 +13,8 @@
       --primary: #0a192f;
       --secondary: #ff4d4d;
       --accent: #ff9f43;
+      --gold: #ffbf00;  /* Gold accent for gradient */
       --text: #ffffff;
-      --field: rgba(46, 139, 87, 0.1);
     }
     body {
       font-family: 'Bebas Neue', 'Arial Narrow', Arial, sans-serif;
@@ -28,24 +28,13 @@
       margin: 0 auto;
       padding: 20px;
     }
+    /* Header: Page Title with Gold Gradient Bar */
     header {
       text-align: center;
-      padding: 2rem 0;
+      padding: 20px 0;
       position: relative;
-      overflow: hidden;
     }
-    header::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 200px;
-      height: 3px;
-      background: var(--secondary);
-      border-radius: 2px;
-    }
-    h1 {
+    header h1 {
       font-size: 2.8rem;
       margin: 0;
       letter-spacing: 3px;
@@ -54,27 +43,38 @@
       color: var(--text);
       font-weight: 400;
     }
+    .gold-bar {
+      height: 4px;
+      width: 80%;
+      margin: 10px auto;
+      background: linear-gradient(90deg, var(--gold), var(--accent));
+    }
     /* Winners & Runners-Up Sections */
-    .section-title h2 {
+    .section-title {
       text-align: center;
       font-family: 'Montserrat', sans-serif;
-      margin: 10px 0;
+      margin: 20px 0 5px;
+      font-size: 1.8rem;
+      text-transform: uppercase;
     }
-    .winner-name, .runnerup-name {
-      font-size: 2rem;
+    .team-display {
       text-align: center;
-      margin: 10px 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      margin: 5px 0 20px;
     }
-    /* Extra space between winners and runners-up */
-    #runners-up {
-      margin-top: 40px;
+    .gold-line {
+      height: 3px;
+      width: 60%;
+      margin: 10px auto;
+      background: linear-gradient(90deg, var(--gold), var(--accent));
     }
-    /* Fixture Card Styles (unchanged from previous version) */
+    /* Fixture Card (PC Version) */
     .fixture-card {
       background: rgba(0,0,0,0.3);
       border-radius: 8px;
       padding: 1.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 20px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
@@ -85,7 +85,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-around;
+      justify-content: center;
     }
     .vs-badge {
       background: var(--secondary);
@@ -94,12 +94,58 @@
       border-radius: 20px;
       font-size: 0.9rem;
       text-transform: uppercase;
-      margin: 0 1rem;
+      margin: 5px 0;
     }
+    /* Standings Table */
+    .group-card {
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      overflow: hidden;
+      position: relative;
+    }
+    .group-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--gold), var(--accent));
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      margin-top: 10px;
+    }
+    th {
+      background: rgba(0,0,0,0.4);
+      padding: 1.2rem;
+      font-size: 1.1rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-family: Arial, sans-serif;
+      font-weight: normal;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+    .pts-cell {
+      color: var(--accent);
+    }
+    .team-name {
+      font-family: 'Montserrat', sans-serif;
+    }
+    /* Footer */
     .footer {
       text-align: center;
-      padding: 2rem;
-      margin-top: 3rem;
+      padding: 20px;
+      margin-top: 20px;
       border-top: 1px solid rgba(255,255,255,0.1);
       font-family: Arial, sans-serif;
     }
@@ -115,24 +161,28 @@
       50% { opacity: 1; }
       100% { opacity: 0.8; }
     }
-    /* Existing Styles for Standings and Fixture Cards remain here... (omitted for brevity) */
-    /* MOBILE OVERRIDES (including auto layout for tables and fixture cards) */
+    /* MOBILE OVERRIDES */
     @media (max-width: 768px) {
+      /* Standings table: switch to auto layout for responsive widths */
       #standings table {
         table-layout: auto !important;
       }
+      /* Fixture cards: use a grid layout with fixed 40% / auto / 40% columns */
       .fixture-card {
         display: grid !important;
         grid-template-columns: 40% auto 40% !important;
         font-size: 0.7rem;
       }
+      /* Ensure left column is right-aligned with extra padding */
       .fixture-card > div:nth-child(1) {
         text-align: right;
         padding-right: 10px;
       }
+      /* Center column remains centered */
       .fixture-card > div:nth-child(2) {
         text-align: center;
       }
+      /* Right column is left-aligned with extra padding */
       .fixture-card > div:nth-child(3) {
         text-align: left;
         padding-left: 10px;
@@ -145,6 +195,7 @@
       .center-container .score {
         font-size: 0.5rem;
       }
+      /* Standings table mobile overrides for larger gap */
       #standings table th, 
       #standings table td {
         font-size: 0.7rem;
@@ -157,6 +208,9 @@
       }
       .team-name {
         font-size: 0.7rem;
+      }
+      .container {
+        padding: 10px;
       }
     }
     @media (max-width: 480px) {
@@ -173,32 +227,43 @@
       }
     }
   </style>
-  <!-- Google Fonts and Confetti Library -->
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital@1&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti Library -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
+    <!-- Page Header -->
     <header>
-      <h1>ICAE 2025 FOOTBALL WINNERS</h1>
+      <h1>ICAE 2025 FOOTBALL SCOREBOARD</h1>
+      <div class="gold-bar"></div>
     </header>
     <!-- Winners Section -->
-    <section id="winners" class="section-title">
-      <h2>ICAE 2025 FOOTBALL WINNERS</h2>
-      <h2 class="winner-name">Qahera Mufaddal</h2>
+    <section id="winners">
+      <h2 class="section-header">ICAE 2025 FOOTBALL WINNERS</h2>
+      <p class="team-display">Qahera Mufaddal</p>
+      <div class="gold-line"></div>
+      <br>
     </section>
     <!-- Runners-Up Section -->
-    <section id="runners-up" class="section-title">
-      <h2>ICAE 2025 FOOTBALL RUNNERS UP</h2>
-      <h2 class="runnerup-name">FC Ain Shams</h2>
+    <section id="runnerup">
+      <h2 class="section-header">ICAE 2025 FOOTBALL RUNNER UP</h2>
+      <p class="team-display">FC Ain Shams</p>
+      <div class="gold-line"></div>
+      <br>
     </section>
-    <!-- Fixture Cards Section -->
+    <!-- Fixture Card Section -->
     <section id="fixtures">
       <div id="fixtures-content"></div>
+      <br>
+    </section>
+    <!-- Standings Table Section -->
+    <section id="standings">
+      <div id="standings-content"></div>
     </section>
     <!-- Footer for Quotes -->
     <div class="footer" id="quote-container">
@@ -207,7 +272,7 @@
   </div>
   <script src="script.js"></script>
   <script>
-    // Launch confetti from both sides on page load
+    // Confetti burst from both sides on page load
     window.addEventListener('load', function() {
       confetti({
         particleCount: 100,
