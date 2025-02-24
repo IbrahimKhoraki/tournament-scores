@@ -15,6 +15,63 @@ const FOOTBALL_QUOTES = [
   { quote: "You have to fight to reach your dream. You have to sacrifice and work hard for it.", author: "Lionel Messi" }
 ];
 
+function loadStandings() {
+  document.getElementById("standings-content").innerHTML = "<p style='padding:1rem;'>Loading Standings...</p>";
+  const groups = ["Group A", "Group B", "Group C"];
+  const promises = groups.map(group => {
+    return fetch(`${BASE_URL}/${group}`)
+      .then(response => response.json())
+      .then(data => {
+        if (!data || !data.length) {
+          return `<div class="group-card">
+                    <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
+                    <p style="padding: 1rem;">No Data Available</p>
+                  </div>`;
+        }
+        data.sort((a, b) => parseInt(b.PTS) - parseInt(a.PTS));
+        const tableRows = data.map(team => `
+          <tr>
+            <td class="team-name">${team['Team Name']}</td>
+            <td>${team.P}</td>
+            <td>${team.W}</td>
+            <td>${team.D}</td>
+            <td>${team.L}</td>
+            <td>${team.GF}</td>
+            <td>${team.GA}</td>
+            <td>${team.GD}</td>
+            <td class="pts-cell">${team.PTS}</td>
+          </tr>
+        `).join('');
+        return `<div class="group-card">
+                  <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th>
+                        <th>GF</th><th>GA</th><th>GD</th><th>PTS</th>
+                      </tr>
+                    </thead>
+                    <tbody>${tableRows}</tbody>
+                  </table>
+                </div>`;
+      })
+      .catch(error => {
+        console.error('Error loading standings for', group, error);
+        return `<div class="group-card">
+                  <h3 style="padding: 1rem; margin: 0; font-size: 2rem;">${group}</h3>
+                  <p style="padding: 1rem;">Error loading data</p>
+                </div>`;
+      });
+  });
+  Promise.all(promises).then(results => {
+    let content = results.join('');
+    if (!content.trim()) {
+      content = "<p style='padding:1rem;'>No Standings Data Available</p>";
+    }
+    document.getElementById("standings-content").innerHTML = content;
+  });
+}
+
 function loadFixtures() {
   document.getElementById("fixtures-content").innerHTML = "<p style='padding:1rem;'>Loading Fixtures...</p>";
   fetch(`${BASE_URL}/Fixtures`)
@@ -24,9 +81,11 @@ function loadFixtures() {
         document.getElementById("fixtures-content").innerHTML = "<p style='padding:1rem;'>No Fixtures Available</p>";
         return;
       }
+      // Display only the first fixture card
+      const match = data[0];
       const accentColor = getComputedStyle(document.documentElement)
                             .getPropertyValue('--accent').trim();
-      const html = data.map(match => `
+      const html = `
         <div class="fixture-card">
           <!-- Left column: Team 1 -->
           <div style="text-align: right; font-size: 1.1rem;">
@@ -48,7 +107,7 @@ function loadFixtures() {
             ${match['Team 2']}
           </div>
         </div>
-      `).join('');
+      `;
       document.getElementById("fixtures-content").innerHTML = html;
     })
     .catch(error => {
@@ -72,9 +131,11 @@ function showRandomQuote() {
 
 document.addEventListener("DOMContentLoaded", () => {
   loadFixtures();
+  loadStandings();
   showRandomQuote();
   setInterval(() => {
     loadFixtures();
+    loadStandings();
     showRandomQuote();
   }, 30000);
 });
