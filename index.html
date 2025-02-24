@@ -13,7 +13,7 @@
       --primary: #0a192f;
       --secondary: #ff4d4d;
       --accent: #ff9f43;
-      --gold: #ffbf00;  /* Gold accent for gradient */
+      --gold: #ffbf00;
       --text: #ffffff;
     }
     body {
@@ -28,11 +28,12 @@
       margin: 0 auto;
       padding: 20px;
     }
-    /* Header: Page Title with Gold Gradient Bar */
+    /* Page Title and Gold Bar */
     header {
       text-align: center;
       padding: 20px 0;
       position: relative;
+      margin-bottom: 30px;
     }
     header h1 {
       font-size: 2.8rem;
@@ -42,31 +43,34 @@
       text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
       color: var(--text);
       font-weight: 400;
+      margin-bottom: 20px;
     }
     .gold-bar {
       height: 4px;
       width: 80%;
-      margin: 10px auto;
+      margin: 10px auto 40px;
       background: linear-gradient(90deg, var(--gold), var(--accent));
     }
-    /* Winners & Runners-Up Sections */
-    .section-title {
+    /* Winners & Runner-Up Sections */
+    .section-header {
       text-align: center;
       font-family: 'Montserrat', sans-serif;
-      margin: 20px 0 5px;
-      font-size: 1.8rem;
+      font-size: 2.5rem;
       text-transform: uppercase;
+      margin-bottom: 20px;
     }
     .team-display {
       text-align: center;
       font-family: 'Montserrat', sans-serif;
-      font-size: 2rem;
-      margin: 5px 0 20px;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      margin-bottom: 40px;
     }
+    /* Gold Line for Separation */
     .gold-line {
       height: 3px;
       width: 60%;
-      margin: 10px auto;
+      margin: 10px auto 30px;
       background: linear-gradient(90deg, var(--gold), var(--accent));
     }
     /* Fixture Card (PC Version) */
@@ -74,7 +78,7 @@
       background: rgba(0,0,0,0.3);
       border-radius: 8px;
       padding: 1.5rem;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       align-items: center;
@@ -96,11 +100,11 @@
       text-transform: uppercase;
       margin: 5px 0;
     }
-    /* Standings Table */
+    /* Standings Table (unchanged) */
     .group-card {
       background: rgba(0,0,0,0.3);
       border-radius: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
       border: 1px solid rgba(255,255,255,0.1);
       overflow: hidden;
       position: relative;
@@ -163,26 +167,23 @@
     }
     /* MOBILE OVERRIDES */
     @media (max-width: 768px) {
-      /* Standings table: switch to auto layout for responsive widths */
+      /* Standings: use auto table layout */
       #standings table {
         table-layout: auto !important;
       }
-      /* Fixture cards: use a grid layout with fixed 40% / auto / 40% columns */
+      /* Fixture cards: use grid with 40% / auto / 40% columns */
       .fixture-card {
         display: grid !important;
         grid-template-columns: 40% auto 40% !important;
         font-size: 0.7rem;
       }
-      /* Ensure left column is right-aligned with extra padding */
       .fixture-card > div:nth-child(1) {
         text-align: right;
         padding-right: 10px;
       }
-      /* Center column remains centered */
       .fixture-card > div:nth-child(2) {
         text-align: center;
       }
-      /* Right column is left-aligned with extra padding */
       .fixture-card > div:nth-child(3) {
         text-align: left;
         padding-left: 10px;
@@ -195,7 +196,7 @@
       .center-container .score {
         font-size: 0.5rem;
       }
-      /* Standings table mobile overrides for larger gap */
+      /* Standings table: Increase gap for first column */
       #standings table th, 
       #standings table td {
         font-size: 0.7rem;
@@ -237,7 +238,7 @@
 </head>
 <body>
   <div class="container">
-    <!-- Page Header -->
+    <!-- Page Title -->
     <header>
       <h1>ICAE 2025 FOOTBALL SCOREBOARD</h1>
       <div class="gold-bar"></div>
@@ -245,14 +246,14 @@
     <!-- Winners Section -->
     <section id="winners">
       <h2 class="section-header">ICAE 2025 FOOTBALL WINNERS</h2>
-      <p class="team-display">Qahera Mufaddal</p>
+      <p class="team-display">QAHERA MUFADDAL</p>
       <div class="gold-line"></div>
       <br>
     </section>
     <!-- Runners-Up Section -->
     <section id="runnerup">
       <h2 class="section-header">ICAE 2025 FOOTBALL RUNNER UP</h2>
-      <p class="team-display">FC Ain Shams</p>
+      <p class="team-display">FC AIN SHAMS</p>
       <div class="gold-line"></div>
       <br>
     </section>
